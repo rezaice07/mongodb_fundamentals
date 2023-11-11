@@ -1,0 +1,43 @@
+
+Mongodb Remote Connection
+---------------------------
+#before starting remote connection we need to change settings in the config file. 
+#Let's allow permission to edit the mongo.config file using root or sudo permitted user.
+
+chmod 777 /etc/mongod.conf
+
+#Now open the mongo.config file 
+
+sudo vim /etc/mongod.conf.conf
+
+#Inside the file (actual the yaml file) in "#network interfaces" section we need to change the "bindIp: 127.0.0.1"  as "bindIp: 0.0.0.0"
+#like below command
+
+# network interfaces
+net:
+  port: 27017
+  bindIp: 0.0.0.0
+  
+#now save to file using command !x (linux save command)
+    
+#Now Execute the command below for restart the mongodb service
+
+sudo systemctl restart mongod
+
+#now check connect using mongodb shell as like below command...
+
+mongosh --host remote_ip_address:port_number
+
+--Example: 
+mongosh --host 192.168.56.101:27017
+
+#Now let's go the mongodb compass and use the connection string as like below...
+
+mongodb://192.168.56.101:27017
+
+#then click on the connect button
+
+uh huuu.....
+Beautiful,
+connected successfully.
+Enjoy.....
