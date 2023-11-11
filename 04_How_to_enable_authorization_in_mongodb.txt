@@ -1,0 +1,103 @@
+Secure MongoDB Connection | How to enable authorization in mongodb | how to create user in mongodb | How to assign a db to a user in mongodb
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+#Let's connect to the mongodb database first using mongo shell
+
+vboxuser@ubuntu2204:/$ mongosh --host 192.168.56.101:27017
+
+#Let's check the databases
+Enterprise test> show dbs
+admin   40.00 KiB
+blog    72.00 KiB
+config  60.00 KiB
+local   72.00 KiB
+test    40.00 KiB
+
+#Choose the database where you want to create a user to access the db
+
+Enterprise test> use admin
+switched to db admin
+
+#Let's create the user on admin database (You can choose another database as you like...)
+
+Enterprise admin> db.createUser(
+    {
+            user: "reja",
+            pwd: "123",
+            roles: [ { role: "userAdminAnyDatabase", db: "blog" }, "readWriteAnyDatabase" ]
+    }
+)
+
+
+#Let's check users in in admin database
+
+Enterprise admin> show users
+[
+  {
+    _id: 'admin.reja',
+    userId: new UUID("61a7deed-af89-4216-8924-4d091df1e8c5"),
+    user: 'reja',
+    db: 'admin',
+    roles: [
+      { role: 'readWriteAnyDatabase', db: 'admin' },
+      { role: 'userAdminAnyDatabase', db: 'admin' }
+    ],
+    mechanisms: [ 'SCRAM-SHA-1', 'SCRAM-SHA-256' ]
+  }
+]
+
+#Now open the mongodb config file to enable the authorization in security section in this yaml file
+
+sudo vim /etc/mongod.conf
+
+security: 
+  authorization: enabled
+  
+#save the file by using !x
+
+#Restart the mongodb service	
+sudo systemctl restart mongod
+
+#Check the mongodb service status
+sudo systemctl status mongod
+
+#At this stage we'll check the connection by using newly created user "reja" and it's database "admin"
+
+vboxuser@ubuntu2204:/$ mongosh -u reja -p --authenticationDatabase admin
+
+#If you try to connect other databases except admin by the user "reja".
+vboxuser@ubuntu2204:/$ mongosh -u reja -p --authenticationDatabase blog
+
+#it will generate an error. this is because of lack of privileges
+
+#Let's see the another example 
+#Here we will create create a user on blog db
+Enterprise test> use blog
+
+Enterprise test> db.createUser({
+   user: "roha",
+   pwd: "123",
+   roles: [
+      { role: "readWrite", db: "blog" }
+   ]
+})
+
+#Check users in blog db
+Enterprise blog> show users
+
+#restart the service
+sudo systemctl restart mongod
+
+#check the service status
+sudo systemctl status mongod
+
+#connect to the blog db by the newly created user roha
+mongosh -u roha -p --authenticationDatabase blog
+
+
+#Keep in mind that MongoDB provides various built-in roles, such as read, readWrite, dbAdmin
+
+Hope you guys enjoy this tutorial.
+
+See you in next one. till then bye bye....
+
