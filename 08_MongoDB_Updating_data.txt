@@ -1,0 +1,74 @@
+MongoDB Updating data | How to update data in mongodb | How to edit data in mongodb | Updating data in mongodb
+----------------------------------------------------------------------------------------------------------------
+#Let's assuming that we have a database is named as "blog" and its collection is "posts". 
+#And we have available data inside the collection "posts".
+
+#But we are gonna update the data from the collection "Posts". How can we do that...
+
+#Firstly, I just wanna to find data as like..
+
+Enterprise blog> db.posts.find({_id:ObjectId("655246ff1f9824a049faa1fc")})
+
+#let's update this result
+
+Enterprise blog> db.posts.updateOne(
+	{
+		_id:ObjectId("655246ff1f9824a049faa1fc")
+	},
+	
+	{
+		$set: 
+		{
+			title: "Post Title One"
+		}
+	}
+)
+
+
+#let's try to find the updated data
+
+Enterprise blog> db.posts.find({_id:ObjectId("655246ff1f9824a049faa1fc")})
+
+--Result
+[
+  {
+    _id: ObjectId("655246ff1f9824a049faa1fc"),
+    title: 'Post Title One',
+    body: 'Body of post.',
+    category: 'News',
+    likes: 1,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:55:43 GMT+0600 (Bangladesh Standard Time)'
+  }
+]
+
+#Now we gonn show an very interesting top is "Insert if not found" while updating record
+
+#This is can be accomplished by "upsert" option
+#let's do that...
+
+Enterprise blog> db.posts.updateOne(
+	{
+		title:"Unknown Title"
+	},
+	
+	{
+		$set: 
+		{
+			title: "Post Title is Unknown"
+		}
+	},
+	{
+		upsert: true
+	}
+)
+
+#Now check the results...
+db.posts.find({title:"Post Title is Unknown"})
+
+#updateMany() method.
+#The updateMany() method will update all documents that match the provided query.
+db.posts.updateMany({}, { $inc: { likes: 1 } })
+
+
+
