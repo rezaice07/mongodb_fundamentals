@@ -1,0 +1,87 @@
+
+MongoDB Finding data | How to find data in mongodb | How to Filter data in mongodb | Searching data in mongodb
+----------------------------------------------------------------------------------------------------------------
+#Let's assuming that we have a database is named as "blog" and its collection is "posts". 
+#And we have available data inside the collection "posts".
+
+#But we are gonna find the data from the collection "Posts". How to we do that...
+
+
+Enterprise blog> db.posts.find()
+
+--Result:
+
+[
+  { _id: ObjectId("6552420c1f9824a049faa1f8"), title: 'Post 1' },
+  {
+    _id: ObjectId("655243b61f9824a049faa1f9"),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  },
+  {
+    _id: ObjectId("655243b61f9824a049faa1fa"),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  },
+  {
+    _id: ObjectId("655243b61f9824a049faa1fb"),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  }
+]
+
+#Let's try to find first one object from the collection "posts". Let's gonna
+
+Enterprise blog> db.posts.findOne()
+
+--Result:
+{ _id: ObjectId("6552420c1f9824a049faa1f8"), title: 'Post 1' }
+
+#Let's try to query or filter data by using the command...
+
+Enterprise blog> db.posts.find({category:"News"})
+[
+  {
+    _id: ObjectId("655246ff1f9824a049faa1fc"),
+    title: 'Post Title 1',
+    body: 'Body of post.',
+    category: 'News',
+    likes: 1,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:55:43 GMT+0600 (Bangladesh Standard Time)'
+  }
+]
+
+--Another example to filter data is 
+
+Enterprise blog> db.posts.find({_id:ObjectId("655246ff1f9824a049faa1fc")})
+
+--Result
+[
+  {
+    _id: ObjectId("655246ff1f9824a049faa1fc"),
+    title: 'Post Title 1',
+    body: 'Body of post.',
+    category: 'News',
+    likes: 1,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:55:43 GMT+0600 (Bangladesh Standard Time)'
+  }
+]
+
+
+
+
+
