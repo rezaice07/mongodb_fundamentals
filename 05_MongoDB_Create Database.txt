@@ -1,0 +1,34 @@
+
+MongoDB - Create Database | How to create database | Creating database in mongodb
+----------------------------------------------------------------------------------
+#To demonstrate the mongodb database creation, we will use mongosh cli based termainal.
+
+#Create or change the database, we can us use command...let's
+
+use blog
+
+#Let's check the newly created database
+
+show dbs
+
+-blog databse now showing
+
+#The reason is that there is no collection in the database "blog".
+
+#first we need to drop the collection that we are going to create if it is exists in blog database.
+
+Enterprise blog> db.posts.drop();
+
+#Let's a collection for the databse blog...
+db.createCollection("posts");
+
+#Let's check the databse again
+
+Enterprise blog> show dbs
+admin   180.00 KiB
+blog      8.00 KiB
+config   72.00 KiB
+local    80.00 KiB
+test     40.00 KiB
+
+
