@@ -1,0 +1,19 @@
+MongoDB Deleting data | How to Delete data in mongodb | How to Remove data in mongodb | Deleting data in mongodb
+----------------------------------------------------------------------------------------------------------------
+#Let's assuming that we have a database is named as "blog" and its collection is "posts". 
+#And we have available data inside the collection "posts".
+
+#But we are gonna delete the data from the collection "Posts". How can we do that...
+
+#We can delete documents by using the methods deleteOne() or deleteMany().
+
+#deleteOne()
+#The deleteOne() method will delete the first document that matches the query provided.
+
+db.posts.deleteOne({_id:ObjectId("655246ff1f9824a049faa1fc")})
+
+#deleteMany()
+#The deleteMany() method will delete all documents that match the query provided.
+
+Example
+db.posts.deleteMany({ category: "Technology" })
