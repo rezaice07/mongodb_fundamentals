@@ -1,0 +1,92 @@
+
+
+Mongodb - Insert Data into a collection of a databse | Mongodb Insert data | Insert Data into mongodb collection | How to insert data in mongodb
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Let's assuming that we have a database is named as "blog" and its collection is "posts". 
+#Now we just wanna insert an object data into the posts collection
+
+#Let's insert an object into the collection "posts". Command...
+
+Enterprise blog> db.posts.insertOne({"title": "Post 1"});
+
+#Remember: we are using the command "insertOne" for a single obeject to be inserted
+
+#Now we are going to insert blulk obejects by using an array into the "posts" collection. Command is
+
+Enterprise blog> db.posts.insertMany([  
+  {
+    title: "Post Title 2",
+    body: "Body of post.",
+    category: "Event",
+    likes: 2,
+    tags: ["news", "events"],
+    date: Date()
+  },
+  {
+    title: "Post Title 3",
+    body: "Body of post.",
+    category: "Technology",
+    likes: 3,
+    tags: ["news", "events"],
+    date: Date()
+  },
+  {
+    title: "Post Title 4",
+    body: "Body of post.",
+    category: "Event",
+    likes: 4,
+    tags: ["news", "events"],
+    date: Date()
+  },
+  {    
+    title: 'Post Title 1',
+    body: 'Body of post.',
+    category: 'News',
+    likes: 1,
+    tags: [ 'news', 'events' ],
+    date: Date()
+  }
+])
+
+
+#Remember: we are using the command "insertMany" for a bulk obeject to be inserted
+
+#Let's have a look to see the posts collection data...
+
+Enterprise blog> db.posts.find()
+
+--Result:
+[
+  { _id: ObjectId("6552420c1f9824a049faa1f8"), title: 'Post 1' },
+  {
+    _id: ObjectId("655243b61f9824a049faa1f9"),
+    title: 'Post Title 2',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 2,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  },
+  {
+    _id: ObjectId("655243b61f9824a049faa1fa"),
+    title: 'Post Title 3',
+    body: 'Body of post.',
+    category: 'Technology',
+    likes: 3,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  },
+  {
+    _id: ObjectId("655243b61f9824a049faa1fb"),
+    title: 'Post Title 4',
+    body: 'Body of post.',
+    category: 'Event',
+    likes: 4,
+    tags: [ 'news', 'events' ],
+    date: 'Mon Nov 13 2023 21:41:42 GMT+0600 (Bangladesh Standard Time)'
+  }
+]
+
+
+
