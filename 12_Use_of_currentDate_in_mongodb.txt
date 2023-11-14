@@ -1,0 +1,33 @@
+Use of $currentDate in mongodb
+-----------------------------------
+#Let's insert a new data to a customers collections
+db.customers.insertOne(
+   { status: "a", lastModified: ISODate("2013-10-02T01:11:18.965Z") }
+)
+
+#new check data 
+db.customers.find()
+
+#now we will use $currentDate operator to update current date and it may a date or type speicications
+
+db.customers.updateOne(
+   { _id: 1 },
+   {
+     $currentDate: {
+        lastModified: true,
+		//new column and the value will be set as date type
+        cancellationDate : true,
+		
+		//new column and to specify the type like
+		cancellation_date_type: { $type: "date" },
+		cancellation_timestmp_type: { $type: "timestamp" }		
+     },
+   }
+)
+
+#Let's check records 
+
+db.customers.find()
+
+
+
