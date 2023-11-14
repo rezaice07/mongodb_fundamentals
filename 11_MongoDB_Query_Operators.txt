@@ -1,0 +1,161 @@
+
+MongoDB Query Operators
+----------------------------------
+#Let's consider the collection empSal which contain the following collection
+
+db.empSal.insertMany([
+  {   
+    name: "Rejwanul Reja",
+    position: "Software Developer",
+    salary: 80000,
+	rank:1,
+    currency: "USD",
+    department: "Engineering",
+    startDate: ISODate("2022-01-01"),
+  },
+  {   
+    name: "Junainah Roha",
+    position: "Software Developer",
+    salary: 80000,
+	rank:2,
+    currency: "USD",
+    department: "Engineering",
+    startDate: ISODate("2022-01-01"),
+  },
+  {   
+    name: "Jui",
+    position: "Software Developer",
+    salary: 80000,
+	rank:3,
+    currency: "USD",
+    department: "Engineering",
+    startDate: ISODate("2022-01-01"),
+  },
+  {    
+    name: "Jane Smith",
+    position: "Data Analyst",
+    salary: 65000,
+	rank:4,
+    currency: "USD",
+    department: "Analytics",
+    startDate: ISODate("2022-03-15"),
+  },
+  {    
+    name: "Jane Smith",
+    position: "Data Analyst",
+    salary: 65000,
+	rank:5,
+    currency: "USD",
+    department: "Analytics",
+    startDate: ISODate("2022-03-15"),
+  }
+]);
+
+#Now check the data
+
+db.empSal.find();
+
+#Use of custing type
+
+db.empSal.updateMany
+(	
+	{ 
+		$set: 
+		{ 
+			salary: 
+			{ 
+				$toDouble: "$salary" 
+			}, 
+			rank: 
+			{ 
+				$toInt: "$rank" 
+			} 
+		} 
+	}
+)
+
+# $inc for updating batch 
+
+db.empSal.updateMany(
+	{ 
+		salary: 
+		{ 
+			$gt: 1000 
+		}
+	}, 
+	{ 
+		$inc: 
+		{ 
+			rank: 5 
+		} 
+	}	
+)
+
+--check now db.empSal.find()
+
+# use of $multiply operator
+
+db.empSal.updateMany(
+  {},
+  [
+    { $set: { salary: { $multiply: ["$salary", 1.25] } } }
+  ]
+);
+
+--check data
+db.empSal.find()
+
+#$in Operator
+
+db.empSal.find({ department: { $in: ["Analytics", "Engineering"] } })
+
+# $and Operator
+db.empSal.find({
+  $and: [
+    { department: "Engineering" },
+    { salary: { $gt: 60000 } }
+  ]
+})
+
+
+# $or Operator Use
+db.empSal.find({
+  $or: [
+    { department: "Engineering" },
+    { salary: { $gt: 60000 } }
+  ]
+})
+
+# $nor Operator Use
+db.empSal.find({
+  $nor: [
+    { department: "Engineering" },
+    { salary: { $gt: 60000 } }
+  ]
+})
+
+# $not Operator Use
+db.empSal.find({
+   department: { $not: { $eq: "Engineering" } }
+})
+
+# $text Operator use
+
+Need to create index
+
+db.empSal.find({ $text: { $search: "Roha" } })
+
+# $where Operator Use
+
+db.empSal.find({
+  $where: function() {
+    return this.salary + 5000 > 60000;
+  }
+})
+
+
+
+
+
+
+
