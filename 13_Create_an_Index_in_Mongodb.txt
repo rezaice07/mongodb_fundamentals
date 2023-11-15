@@ -1,22 +1,56 @@
-#Create a text Index
-#Let's recreate the index after droping
 
-db.posts.dropIndex({title:1,body:1});
+Create an Index in Mongodb | Mongodb index creation | How to create mongodb | mongodb index
+--------------------------------------------------------------------------------------------
 
-db.posts.createIndex({title:"text",body:"text"});
+#Indexes allow MongoDB to process and fulfill queries quickly by creating small and efficient representations of the documents 
+in a collection. 
 
-#Let's filter data
-db.posts.find({ $text: { $search: "esse" } });
+#Users can create indexes for any collection on any field in a document. 
+#By default, MongoDB creates an index on the _id field of every collection.
+
+#Let's consider a collection posts
+#and it has document properties as...
+"id"
+"userId"
+"title"
+"body"
+
+#Create an Index on a Single Field
+
+db.posts.createIndex( { title: 1 } )
+
+#Let's find the records
+
+db.posts.find({title:'qui est esse'})
+
+#Let's Build a Compound Index
+
+db.posts.createIndex({userId:1,title:1,body:1})
+
+#Let's query on posts
+
+db.posts.find({userId:4})
 
 
-#Index All Fields
-To allow for text search on all fields with string content, 
-use the wildcard specifier ($**) to index all fields that contain string content.
+#Create a Unique Index
 
-db.collection.createIndex(
-	{ "$**": "text" },
-	{ name: "postsTextIndex" }
-)
+db.posts.createIndex({title:1,body:1},{unique:true})
 
-#Find Indexes
-db.posts.getIndexes();
+#sparse - Unique Index and Missing Field
+#Sparse indexes skip over any document that is missing the indexed field, rather than storing null for the index entry.
+
+db.posts.dropIndex("title_1_body_1")
+
+db.posts.createIndex( {title:1,body:1}, { unique: true, sparse: true } )
+
+#Let's Remove a Specific Index
+
+db.posts.dropIndex( { "title": 1 } )
+or
+db.posts.dropIndex( {userId:1,title:1,body:1} )
+
+#Let's Modify an Index
+#Attempt to modify the index.
+#To modify an existing index, you cannot just re-issue the createIndex() method with the updated specification of the index.
+
+
