@@ -1,0 +1,22 @@
+#Create a text Index
+#Let's recreate the index after droping
+
+db.posts.dropIndex({title:1,body:1});
+
+db.posts.createIndex({title:"text",body:"text"});
+
+#Let's filter data
+db.posts.find({ $text: { $search: "esse" } });
+
+
+#Index All Fields
+To allow for text search on all fields with string content, 
+use the wildcard specifier ($**) to index all fields that contain string content.
+
+db.collection.createIndex(
+	{ "$**": "text" },
+	{ name: "postsTextIndex" }
+)
+
+#Find Indexes
+db.posts.getIndexes();
