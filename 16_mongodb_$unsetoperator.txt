@@ -1,0 +1,54 @@
+mongodb - $unset operator | How to delete/remove fields in mongodb | mongodb $unset
+-----------------------------------------------------------------------------------------
+#$unset: The $unset operator deletes a particular field.
+
+#Let's drop the collection suppliers if it exists
+
+db.suppliers.drop();
+
+#Let's create a collection "suppliers"
+db.createCollection("suppliers");
+
+#Now we'll insert some documents into this suppliers
+
+db.suppliers.insertMany(
+[
+  {
+    _id: 1,
+    name: 'Rejwanul Reja',
+    phone: '8801718055626',
+    emailId: 'rezaice07@gmail.com'
+  },
+  {
+    _id: 2,
+    name: 'Junainah Yousra Roha',
+    phone: '880171805500',
+    emailId: 'roharu45452@gmail.com'
+  },
+  {
+    _id: 3,
+    name: 'Khadiza Jui',
+    phone: '8801718045455',
+    emailId: 'jui452@gmail.com'
+  }
+]
+)
+
+#check data
+
+Enterprise test> db.suppliers.find()
+
+#Let's unset the fields
+db.suppliers.updateMany( {}, { $unset: { "phone":"","emailId":"" } } )
+
+#Check the changes after naming fields...
+
+Enterprise test> db.suppliers.find()
+[
+  { _id: 1, name: 'Rejwanul Reja' },
+  { _id: 2, name: 'Junainah Yousra Roha' },
+  { _id: 3, name: 'Khadiza Jui' }
+]
+
+Fore more, follow the link...
+https://www.mongodb.com/docs/manual/reference/operator/update/unset/
