@@ -1,0 +1,65 @@
+mongodb - $rename operator | How to rename fields in mongodb | mongodb $rename
+-----------------------------------------------------------------------------------------
+
+#Let's create a collection "suppliers"
+db.createCollection("suppliers");
+
+#Now we'll insert some documents into this suppliers
+
+db.suppliers.insertMany(
+[
+  {
+    _id: 1,
+    name: 'Rejwanul Reja',
+    phone: '8801718055626',
+    emailId: 'rezaice07@gmail.com'
+  },
+  {
+    _id: 2,
+    name: 'Junainah Yousra Roha',
+    phone: '880171805500',
+    emailId: 'roharu45452@gmail.com'
+  },
+  {
+    _id: 3,
+    name: 'Khadiza Jui',
+    phone: '8801718045455',
+    emailId: 'jui452@gmail.com'
+  }
+]
+)
+
+#check data
+
+Enterprise test> db.suppliers.find()
+
+#Let's rename the fields
+db.suppliers.updateMany( {}, { $rename: { "name": "fullName","phone":"cellPhone","emailId":"email" } } )
+
+#Check the changes after naming fields...
+Enterprise test> db.suppliers.find()
+[
+  {
+    _id: 1,
+    cellPhone: '8801718055626',
+    email: 'rezaice07@gmail.com',
+    fullName: 'Rejwanul Reja'
+  },
+  {
+    _id: 2,
+    cellPhone: '880171805500',
+    email: 'roharu45452@gmail.com',
+    fullName: 'Junainah Yousra Roha'
+  },
+  {
+    _id: 3,
+    cellPhone: '8801718045455',
+    email: 'jui452@gmail.com',
+    fullName: 'Khadiza Jui'
+  }
+]
+
+
+Fore more, follow the link...
+https://www.mongodb.com/docs/v4.2/reference/operator/update/rename/
+
