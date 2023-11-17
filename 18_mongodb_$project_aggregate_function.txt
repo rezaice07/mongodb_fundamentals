@@ -1,0 +1,61 @@
+mongodb - $project aggregate function | How to project collection in mongodb | mongodb $project
+-----------------------------------------------------------------------------------------
+#$project: The aggregate function $project can be used for projecting items of a collection
+
+#Let's drop the collection suppliers if it exists
+
+db.itemStocks.drop();
+
+#Let's create a collection "suppliers"
+db.createCollection("itemStocks");
+
+#Now we'll insert some documents into this suppliers
+
+db.itemStocks.insertMany(
+[
+	{_id:1,company:'MFL',store: 'General Store', item:'Ball Pen',unit:'Pcs', price:17, rcvQty:8500, issQty:500},
+	{_id:2,company:'MFL',store: 'General Store', item:'Ball Pen',unit:'Pcs', price:10,rcvQty:1000, issQty:50},
+	{_id:3,company:'MFL',store: 'General Store', item:'Ball Pen',unit:'Pcs', price:75,rcvQty:7000, issQty:100},
+							  
+	{_id:4,company:'MFL',store: 'Accessories', item:'Yarn',unit:'bundle', price:1542,rcvQty:1254, issQty:500},
+	{_id:5,company:'MFL',store: 'Accessories', item:'Yarn',unit:'bundle', price:1542,rcvQty:1254, issQty:452},
+	{_id:6,company:'MFL',store: 'Accessories', item:'Yarn',unit:'bundle', price:1502,rcvQty:1254, issQty:100},
+							  
+							  
+	{_id:7,company:'EMS',store: 'Accessories', item:'Single Poly',unit:'Pack', price:0.24,rcvQty:7000, issQty:560},
+	{_id:8,company:'EMS',store: 'Accessories', item:'Single Poly',unit:'Pack', price:0.23,rcvQty:4000, issQty:760},
+	{_id:9,company:'EMS',store: 'Accessories', item:'Single Poly',unit:'Pack', price:0.21,rcvQty:8000, issQty:260},
+]
+)
+
+#let's projects the number of documents
+
+db.itemStocks.aggregate(
+[
+	{
+		$match: {
+
+		}
+	},	
+	{
+		$project:{
+			_id:"$_id",
+			companyName:"$company",
+			itemTitle:"$item",
+			unit:"$unit",
+			price:"$price"
+		}
+	},
+	{
+		$addFields:{
+			remarks: { $concat: ['projectting ', '1 records only' ]}
+		}
+	},
+	{ $limit: 3 } 
+]
+)
+
+
+Fore more, follow the link...
+https://www.w3schools.com/mongodb/mongodb_aggregations_project.php
+
