@@ -1,0 +1,292 @@
+
+mongodb - $lookup aggregate function | How to lookup in collection on mongodb | mongodb $lookup 
+-----------------------------------------------------------------------------------------
+#$lookup : This aggregation stage performs a left outer join to a collection in the same database
+
+#There are four required fields:
+	from: 
+		The collection to use for lookup in the same database
+	localField: 
+		The field in the primary collection that can be used as a unique identifier in the from collection.
+	foreignField: 
+		The field in the from collection that can be used as a unique identifier in the primary collection.
+	as: 
+		The name of the new field that will contain the matching documents from the from collection.
+
+#Let's drop and create the collection "invItemCategories" if it exists
+db.invItemCategories.drop();
+db.createCollection("invItemCategories");
+
+#Now we'll insert some documents into this invItemCategories
+
+db.invItemCategories.insertMany(
+[
+	{_id:1,itemCategoryName:'Smartphones',createdOn: new Date()},
+	{_id:2,itemCategoryName:'Laptops',createdOn: new Date()},
+	{_id:3,itemCategoryName:'Automotive',createdOn: new Date()},
+]
+);
+
+db.invItemCategories.find();
+
+#Let's drop and create the collection invItems if it exists
+db.invItems.drop();
+db.createCollection("invItems");
+
+db.invItems.insertMany(
+[
+	{_id:1,invItemCategoryId:1, invItemName:'Iphone 6',createdOn: new Date()},
+	{_id:2,invItemCategoryId:1, invItemName:'Samsung J7 Prime',createdOn: new Date()},
+	
+	{_id:3,invItemCategoryId:2, invItemName:'Dell Inspiron',createdOn: new Date()},
+	{_id:4,invItemCategoryId:2, invItemName:'Hp Probook',createdOn: new Date()},
+	
+	{_id:5,invItemCategoryId:3, invItemName:'Bajaj Discover 125',createdOn: new Date()},
+	{_id:6,invItemCategoryId:3, invItemName:'Toyota Axio',createdOn: new Date()},
+]
+);
+
+db.invItems.find();
+
+#Let's lookup
+
+db.invItems.aggregate([
+	{
+		$match:{},
+	},
+	{
+		$lookup: {
+			from : "invItemCategories",
+			localField: "invItemCategoryId",
+			foreignField: "_id",
+			as: "invItemCats"
+		}
+	},
+	{
+		$limit: 100
+	}
+]);
+
+
+#Let's drop and create the collection hrCompanies if it exists
+db.hrCompanies.drop();
+db.createCollection("hrCompanies");
+
+db.hrCompanies.insertMany(
+[
+	{_id:1,companyName:'MFL',createdOn: new Date()},
+	{_id:2,companyName:'EMS',createdOn: new Date()}
+]
+);
+
+db.hrCompanies.find({});
+
+
+#Let's drop and create the collection scmStores if it exists
+db.scmStores.drop();
+db.createCollection("scmStores");
+
+db.scmStores.insertMany(
+[
+	{_id:1,hrCompanyId:1, scmStoreName:'Smartphone Store',createdOn: new Date()},
+	{_id:2,hrCompanyId:1, scmStoreName:'Automotive Store',createdOn: new Date()},	
+	{_id:3,hrCompanyId:2, scmStoreName:'Laptops Store',createdOn: new Date()}
+]
+);
+
+db.scmStores.find({});
+
+#Let's drop and create a collection "mouUnits"
+db.mouUnits.drop();
+db.createCollection("mouUnits");
+
+db.mouUnits.insertMany(
+[
+	{_id:1,unitName:'Pcs',createdOn: new Date()},
+	{_id:2,unitName:'Kg',createdOn: new Date()},	
+	{_id:3,unitName:'Pack',createdOn: new Date()}
+]
+);
+
+db.mouUnits.find({});
+
+#Let's drop and create a collection "invItemStocks"
+db.invItemStocks.drop();
+db.createCollection("invItemStocks");
+
+#Now we'll insert some documents into this invItemStocks
+
+db.invItemStocks.insertMany(
+[
+	{_id:1,companyId:1,storeId: 1, itemId:1,unitId:1, price:17, rcvQty:8500, issQty:500},
+	{_id:2,companyId:1,storeId: 1, itemId:2,unitId:1, price:10,rcvQty:1000, issQty:50},
+								   
+	{_id:4,companyId:1,storeId: 2, itemId:3,unitId:1, price:1542,rcvQty:1254, issQty:500},
+	{_id:5,companyId:1,storeId: 2, itemId:4,unitId:1, price:1542,rcvQty:1254, issQty:452},
+								   
+	{_id:7,companyId:2,storeId: 3, itemId:5,unitId:3, price:0.24,rcvQty:7000, issQty:560},
+	{_id:8,companyId:2,storeId: 3, itemId:6,unitId:3, price:0.23,rcvQty:4000, issQty:760}
+]
+)
+
+#let's check data
+db.invItemStocks.find({});
+
+#let's lookup the collection
+
+db.invItemStocks.aggregate([
+	{
+		$match:{
+		
+		}
+	},
+	{
+		$lookup:{
+			from:"hrCompanies",
+			localField:"companyId",
+			foreignField: "_id",
+			as:"companyInfo"
+		}	
+	},
+	{
+		$limit:100
+	}
+]);
+
+
+#let's clear the window
+console.clear();
+
+#Let's look both company and store at the sametime
+
+db.invItemStocks.aggregate([
+	{
+		$match:{
+		
+		}
+	},
+	{ //Company
+		$lookup:{
+			from:"hrCompanies",
+			localField:"companyId",
+			foreignField: "_id",
+			as:"companyInfo"
+		}	
+	},
+	{ //Store
+		$lookup:{
+			from:"scmStores",
+			localField:"storeId",
+			foreignField: "_id",
+			as:"storeInfo"
+		}	
+	},
+	{
+		$limit:100
+	}
+]).pretty();
+
+#let's look all the foreign fields
+
+db.invItemStocks.aggregate([
+	{
+		$match:{
+		
+		}
+	},
+	{ //Company
+		$lookup:{
+			from:"hrCompanies",
+			localField:"companyId",
+			foreignField: "_id",
+			as:"companyInfo"
+		}	
+	},
+	{ //Store
+		$lookup:{
+			from:"scmStores",
+			localField:"storeId",
+			foreignField: "_id",
+			as:"storeInfo"
+		}	
+	},
+	{ //item
+		$lookup:{
+			from:"invItems",
+			localField:"itemId",
+			foreignField: "_id",
+			let: { invItemCategoryId: "$invItemCategoryId" },
+			pipeline: [
+				{
+					$lookup:{
+						from:"invItemCategories",
+						localField:"invItemCategoryId",
+						foreignField:"_id",						
+						as:"categoryInfo"
+					}
+				}								
+			],			
+			as:"itemInfo"
+		}	
+	},
+	{
+		$limit:100
+	}
+]).pretty();
+
+#projection in nested items
+
+db.invItemStocks.aggregate([
+	{
+		$match:{
+		
+		}
+	},
+	{ //Company
+		$lookup:{
+			from:"hrCompanies",
+			localField:"companyId",
+			foreignField: "_id",
+			as:"companyInfo"
+		}	
+	},
+	{ //Store
+		$lookup:{
+			from:"scmStores",
+			localField:"storeId",
+			foreignField: "_id",
+			as:"storeInfo"
+		}	
+	},
+	{ //item
+		$lookup:{
+			from:"invItems",
+			localField:"itemId",
+			foreignField: "_id",
+			let: { invItemCategoryId: "$invItemCategoryId" },
+			pipeline: [
+				{
+					$lookup:{
+						from:"invItemCategories",
+						localField:"invItemCategoryId",
+						foreignField:"_id",
+						pipeline: [
+							{ $project: { _id: 0 } }
+						],
+						as:"categoryInfo"
+					}
+				},
+				{ $project: { _id: 0 } }				
+			],			
+			as:"itemInfo"
+		}	
+	},
+	{
+		$limit:100
+	}
+]).pretty();
+
+
+
+Fore more, follow the link...
+https://www.w3schools.com/mongodb/mongodb_aggregations_lookup.php
