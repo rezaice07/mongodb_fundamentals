@@ -77,6 +77,4 @@ db.itemStocks.aggregate(
 )
 
 
-Fore more, follow the link...
-https://www.mongodb.com/docs/manual/reference/operator/update/unset/
 
