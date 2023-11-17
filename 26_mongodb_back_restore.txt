@@ -1,0 +1,30 @@
+
+#Backup Commands
+
+mongodump
+
+mongodump --out /mongdb_backups/mongodb_18_nov_2023
+
+mongodump -d test --out /mongdb_backups/mongodb_18_nov_2023
+
+
+mongodump -d test -c posts --out /mongdb_backups/mongodb_18_nov_2023
+
+
+#Restore Commands
+
+mongorestore  dump/
+
+mongorestore --nsInclude test /mongdb_backups/mongodb_18_nov_2023
+
+mongorestore --nsInclude test.posts /mongdb_backups/mongodb_18_nov_2023
+
+mongorestore --nsInclude=test.purchaseorders dump/
+
+mongorestore --nsInclude=foo.bar dump/
+
+
+References:
+---------------
+https://www.mongodb.com/docs/database-tools/mongorestore/
+
