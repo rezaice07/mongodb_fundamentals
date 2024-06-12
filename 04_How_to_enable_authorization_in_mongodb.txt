@@ -24,7 +24,7 @@ Enterprise admin> db.createUser(
     {
             user: "reja",
             pwd: "123",
-            roles: [ { role: "userAdminAnyDatabase", db: "blog" }, "readWriteAnyDatabase" ]
+            roles: [ { role: "userAdminAnyDatabase", db: "admin" }, "readWriteAnyDatabase" ]
     }
 )
 
