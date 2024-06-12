@@ -61,7 +61,9 @@ sudo systemctl restart mongod
 #Check the mongodb service status
 sudo systemctl status mongod
 
-#At this stage we'll check the connection by using newly created user "reja" and it's database "admin"
+#At this stage we'll check the connection by using newly created user "reja" and the user is created from db "admin". So the authenticationDatabase or authSource db should be "admin" .
+And you must specify the authenticationDatabase as admin instead of other db name. Otherwise it will occur the authention error.
+Now we'll try to connect on "admin" db with use "reja"
 
 vboxuser@ubuntu2204:/$ mongosh -u reja -p --authenticationDatabase admin
 
