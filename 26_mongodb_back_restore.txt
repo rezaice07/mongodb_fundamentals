@@ -23,8 +23,38 @@ mongorestore --nsInclude=test.purchaseorders dump/
 
 mongorestore --nsInclude=foo.bar dump/
 
+**For windows***
+01.Create a new file...
+--open cmd
+02.Download Command Line Database
+mongodb website => tools => MongoDB Command Line Database Tools Download(msi-package)
+03.Download folder location and bin path copy
+---C:\Program Files\MongoDB\Tools\100\bin
+04.Edit the System environment variables ==> environment variables ==> path => edit => new => path past(C:\Program Files\MongoDB\Tools\100\bin) => ok
+05.open cmd
+06.Command Line
+--mongodump
+--mongodump --out backup (backup folder Create) 
+07.SingleDatabase Backup
+--mongodump -d SingleDatabaseName (buyitnow) --out folder Name(singleDatabase)
+08.Single Collection Backup
+--mongodump -d SingleDatabaseName (buyitnow) -c CollectionName(users) --out folderName(singleCollection)
+09.cmd cleare
+--cls
+
+**MongoDB Database Restore**
+
+01.open backup file
+02.open cmd 
+03.All Database Restore Command
+--mongorestore
+04.Single Database Restore Command
+--mongorestore folderName(singleDatabase)
+05.Single Collection Restore Command
+--mongorestore --nsInclude SingleDatabaseName(buyitnow).CollectionName(users) folderName(singleCollection)
 
 References:
 ---------------
 https://www.mongodb.com/docs/database-tools/mongorestore/
+https://www.youtube.com/watch?v=qcGYBsdOc8I&ab_channel=StackWiseDev
 
